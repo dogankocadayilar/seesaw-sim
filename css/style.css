@@ -72,6 +72,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translateX(-50%);
+  transition: transform ease 200ms;
   transform-origin: center center;
   width: 400px;
   height: 20px;

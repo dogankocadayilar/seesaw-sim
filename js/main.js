@@ -39,12 +39,14 @@ function resetSeesaw() {
   updateUI();
 }
 
+let currentX = "50%";
+
 function handleMove(e) {
   // Getting clientRects on mouse movement so it doesn't breake on window resize
   const seesawContainerRect = seesawContainer.getBoundingClientRect();
   const seesawPlankRect = seesawPlank.getBoundingClientRect();
 
-  let x = e.clientX - seesawContainerRect.left - 50;
+  let x = e.clientX - seesawContainerRect.left - 30;
 
   // Plank distance to container element
   const diff = seesawPlankRect.left - seesawContainerRect.left;
@@ -53,15 +55,15 @@ function handleMove(e) {
   const minX = diff;
   const maxX = seesawPlankRect.width + diff;
   x = Math.max(minX, Math.min(x, maxX));
+  currentX = x + "px";
 
   if (object) {
-    object.style.left = x + "px";
-    // Calculate the object height realtime, object stays always in the same place
-    object.style.top = 180 - parseInt(object.style.height) + "px";
+    object.style.left = currentX;
+    object.style.top = 140 + "px";
   }
 
   if (line) {
-    line.style.left = x + "px";
+    line.style.left = currentX;
     line.style.top = 160 + "px";
   }
 }
@@ -83,6 +85,7 @@ function handleClick(e) {
 
     updatePhysics();
     updateUI();
+    createObject();
   }
 }
 
@@ -116,36 +119,42 @@ function updateUI() {
   leftWeight.textContent = State.leftWeight + " kg";
   rightWeight.textContent = State.rightWeight + " kg";
   angle.textContent = State.angle + "°";
+
+  seesawPlank.style.transform = `translateX(-50%) rotate(${State.angle}deg)`;
 }
 
 // Create the object for ui not state (ghost object)
-function createObject(x) {
-  if (object) object.remove();
-  if (line) line.remove();
+function createObject() {
+  let posX = currentX;
+  let posY = object ? object.style.top : "0px";
+
+  removeObject();
 
   object = document.createElement("div");
   object.className = "current-object";
   object.textContent = State.nextWeight + "kg";
+
   object.style.width = getObjectSize(State.nextWeight) + "px";
   object.style.height = getObjectSize(State.nextWeight) + "px";
   object.style.backgroundColor = getRandomRGB();
 
+  object.style.left = posX;
+  object.style.top = posY;
+
   line = document.createElement("div");
   line.className = "current-line";
-  line.style.height = object.style.top + "px";
+  line.style.height = 50 + "px";
+
+  line.style.left = posX;
+  line.style.top = "160px";
 
   seesawContainer.append(object, line);
 }
 
 // Remove the ghost object
 function removeObject() {
-  if (object) {
-    object.remove();
-  }
-
-  if (line) {
-    line.remove();
-  }
+  if (object) object.remove();
+  if (line) line.remove();
 }
 
 window.addEventListener("DOMContentLoaded", initApp);
