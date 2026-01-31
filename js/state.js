@@ -15,7 +15,7 @@ export const State = {
     this.generateNextWeight();
   },
   generateNextWeight() {
-    this.nextWeight = Math.floor(Math.random() * 10) + 1;
+    this.nextWeight = Math.round(Math.random() * 9) + 1;
   },
   addObject(weight, distanceFromCenter, side) {
     this.objects.push({ weight, distanceFromCenter, side });
