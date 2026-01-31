@@ -3,8 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <div class="container">
+      <div class="seesaw-info">
+        <div class="info-box">
+          <div class="info-label">Next Weight</div>
+          <div class="info-value">0.0 kg</div>
+        </div>
+        <div class="info-box">
+          <div class="info-label">Left Weight</div>
+          <div class="info-value">0 kg</div>
+        </div>
+        <div class="info-box">
+          <div class="info-label">Right Weight</div>
+          <div class="info-value">0 kg</div>
+        </div>
+        <div class="info-box">
+          <div class="info-label">Tilt Angle</div>
+          <div class="info-value">0.0°</div>
+        </div>
+      </div>
+      <div class="seesaw-container">
+        <div class="plank"></div>
+        <div class="pivot"></div>
+        <div class="ground"></div>
+        <div class="seesaw-clickable"></div>
+      </div>
+      <div class="seesaw-control">
+        <button class="reset-button">Reset Seesaw</button>
+      </div>
+      <div class="seesaw-log"></div>
+    </div>
     <script src="js\main.js"></script>
   </body>
 </html>

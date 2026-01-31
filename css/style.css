@@ -1,0 +1,144 @@
+:root {
+  --light: 233, 236, 239;
+  --dark: 52, 58, 64;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 900px;
+  gap: 1rem;
+  padding: 32px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(var(--dark), 0.4);
+}
+
+.seesaw-info {
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.info-box {
+  border: 1px solid rgba(var(--dark), 0.1);
+  min-width: 140px;
+  background: rgb(var(--light));
+  padding: 8px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.info-label {
+  font-size: 0.8em;
+  font-weight: 500;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(var(--dark), 0.7);
+}
+
+.info-value {
+  font-size: 1.25em;
+  font-weight: 600;
+  color: rgb(var(--dark));
+}
+
+.seesaw-container {
+  position: relative;
+  width: 800px;
+  height: 400px;
+  background: rgb(var(--light));
+  border-radius: 8px;
+  border: 1px solid rgba(var(--dark), 0.1);
+  overflow: hidden;
+}
+
+.plank {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  transform-origin: center center;
+  width: 400px;
+  height: 20px;
+  background: rgb(var(--dark));
+  pointer-events: none;
+  z-index: 10;
+}
+.pivot {
+  position: absolute;
+  top: calc(50% + 15px);
+  left: 50%;
+  transform: translateX(-50%);
+  transform-origin: center center;
+  width: 0;
+  height: 0;
+  border-right: 20px solid transparent;
+  border-left: 20px solid transparent;
+  border-bottom: 40px solid rgb(var(--dark));
+  z-index: 5;
+}
+
+.ground {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  background: rgb(var(--dark), 0.4);
+}
+
+.seesaw-clickable {
+  position: absolute;
+  left: 50%;
+  transform-origin: center center;
+  width: 500px;
+  height: 100%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  z-index: 100;
+  background: transparent;
+}
+
+.seesaw-control {
+  text-align: center;
+}
+
+.reset-button {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  background: rgb(var(--dark));
+  color: white;
+  cursor: pointer;
+  letter-spacing: 0.4px;
+}
+
+.reset-button:hover {
+  background: rgba(var(--dark), 0.85);
+  transform: translateY(-2px);
+  transition:
+    background 200ms,
+    transform ease-in-out 100ms;
+}
+
+.reset-button:active {
+  transform: translateY(0);
+}
+
+.seesaw-log {
+}
