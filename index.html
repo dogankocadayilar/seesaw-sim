@@ -10,32 +10,32 @@
       <div class="seesaw-info">
         <div class="info-box">
           <div class="info-label">Next Weight</div>
-          <div class="info-value">0.0 kg</div>
+          <div class="info-value" id="nextWeight">0.0 kg</div>
         </div>
         <div class="info-box">
           <div class="info-label">Left Weight</div>
-          <div class="info-value">0 kg</div>
+          <div class="info-value" id="leftWeight">0 kg</div>
         </div>
         <div class="info-box">
           <div class="info-label">Right Weight</div>
-          <div class="info-value">0 kg</div>
+          <div class="info-value" id="rightWeight">0 kg</div>
         </div>
         <div class="info-box">
           <div class="info-label">Tilt Angle</div>
-          <div class="info-value">0.0°</div>
+          <div class="info-value" id="angle">0.0°</div>
         </div>
       </div>
-      <div class="seesaw-container">
-        <div class="plank"></div>
+      <div class="seesaw-container" id="seesawContainer">
+        <div class="plank" id="seesawPlank"></div>
         <div class="pivot"></div>
         <div class="ground"></div>
-        <div class="seesaw-clickable"></div>
+        <div class="seesaw-clickable" id="seesawClickable"></div>
       </div>
       <div class="seesaw-control">
-        <button class="reset-button">Reset Seesaw</button>
+        <button class="reset-button" id="seesawResetBtn">Reset Seesaw</button>
       </div>
       <div class="seesaw-log"></div>
     </div>
-    <script src="js\main.js"></script>
+    <script type="module" src="js\main.js"></script>
   </body>
 </html>

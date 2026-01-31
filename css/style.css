@@ -142,3 +142,25 @@ body {
 
 .seesaw-log {
 }
+
+.current-object {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  font-size: 1em;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.current-line {
+  position: absolute;
+  border-left: 2px dashed black;
+  pointer-events: none;
+  width: 2px;
+  height: 50px;
+  z-index: 7;
+}
