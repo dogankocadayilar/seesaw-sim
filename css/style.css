@@ -139,7 +139,7 @@ body {
   transform: translateY(0);
 }
 
-.seesaw-log {
+.seesaw-logs {
   background-color: rgba(var(--light), 0.8);
   border: 1px solid rgb(var(--light));
   padding: 4px;
@@ -156,7 +156,7 @@ body {
   margin: 4px 0;
   background-color: white;
   color: rgb(var(--dark));
-  animation: slideIn ease-out 300ms;
+  animation: appear ease 200ms;
 }
 
 .object {
@@ -199,14 +199,12 @@ body {
   z-index: 7;
 }
 
-@keyframes slideIn {
+@keyframes appear {
   from {
     opacity: 0;
-    transform: translateX(-10px);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
   }
 }
 

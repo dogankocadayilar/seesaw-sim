@@ -13,7 +13,7 @@ const rightWeight = document.getElementById("rightWeight");
 const angle = document.getElementById("angle");
 
 const seesawResetBtn = document.getElementById("seesawResetBtn");
-const seesawLog = document.getElementById("seesawLog");
+const seesawLogs = document.getElementById("seesawLogs");
 const seesawContainer = document.getElementById("seesawContainer");
 const seesawClickable = document.getElementById("seesawClickable");
 const seesawPlank = document.getElementById("seesawPlank");
@@ -32,9 +32,8 @@ let line;
 function initApp() {
   const saved = State.loadFromLocalStorage();
   if (saved) {
-    State.generateNextWeight();
-    nextWeight.textContent = State.nextWeight + " kg";
     generateObjects();
+    generateLogs();
     updatePhysics();
     updateUI();
   } else {
@@ -47,7 +46,7 @@ function resetSeesaw() {
   State.reset();
   updateUI();
   seesawPlank.innerHTML = "";
-  seesawLog.innerHTML = "";
+  seesawLogs.innerHTML = "";
 }
 
 // Current mouse position on x plane needed for re-creating the ghost object
@@ -63,9 +62,9 @@ function handleMove(e) {
   // Plank distance to container element
   const diff = seesawPlankRect.left - seesawContainerRect.left;
 
-  // Limit the movement of ghost object
   const minX = diff;
   const maxX = seesawPlankRect.width + diff;
+  // Limit the movement of ghost object
   x = Math.max(minX, Math.min(x, maxX));
   currentX = x + "px";
 
@@ -92,13 +91,10 @@ function handleClick(e) {
     const color = getRandomRGB();
     State.addObject(State.nextWeight, distanceFromCenter, side, color);
 
-    // Gonna add logs state to for getting logs from ls
     createLog(State.nextWeight, distanceFromCenter, side);
 
     // createObject(distanceFromCenter, side);
     generateObjects();
-
-    State.generateNextWeight();
 
     updatePhysics();
     updateUI();
@@ -108,6 +104,20 @@ function handleClick(e) {
   }
 }
 
+// Gonna call one time in init func
+// Its reverse bcs adding logs on top of the parent element
+function generateLogs() {
+  seesawLogs.innerHTML = State.objects
+    .reverse()
+    .map((object) => {
+      const { weight, distanceFromCenter, side } = object;
+      // 2kg dropped on left at 88.5px from center.
+      return `<div class="log">${weight}kg dropped on ${side} at ${distanceFromCenter}px from center.</div>`;
+    })
+    .join("");
+}
+
+// Simple generate objects with map
 function generateObjects() {
   seesawPlank.innerHTML = State.objects
     .map((object) => {
@@ -126,6 +136,7 @@ function generateObjects() {
     .join("");
 }
 
+// Updating physics and state
 function updatePhysics() {
   let angle;
   let rightObjects;
@@ -151,7 +162,10 @@ function updatePhysics() {
   State.rightWeight = rightWeight;
 }
 
+// Just update ui and plank angle
 function updateUI() {
+  State.generateNextWeight();
+
   nextWeight.textContent = State.nextWeight + " kg";
   leftWeight.textContent = State.leftWeight + " kg";
   rightWeight.textContent = State.rightWeight + " kg";
@@ -163,7 +177,7 @@ function updateUI() {
 // Create the object for ui state (ghost object)
 function createGhostObject() {
   let posX = currentX;
-  let posY = ghostObject ? ghostObject.style.top : "0px";
+  let posY = ghostObject ? ghostObject.style.top : "-1000px";
 
   // If there is already a ghost object remove it
   removeGhostObject();
@@ -183,7 +197,7 @@ function createGhostObject() {
   line.style.height = 50 + "px";
 
   line.style.left = posX;
-  line.style.top = "160px";
+  line.style.top = "-1000px";
 
   seesawContainer.append(ghostObject, line);
 }
@@ -200,7 +214,8 @@ function createLog(weight, distanceFromCenter, side) {
   log.textContent = `${weight}kg dropped on ${side} at ${distanceFromCenter}px from center.`;
 
   // Inserting log to on top of the log container
-  seesawLog.insertBefore(log, seesawLog.firstChild);
+  seesawLogs.insertBefore(log, seesawLogs.firstChild);
 }
 
+// initialize when all dom elements loaded
 window.addEventListener("DOMContentLoaded", initApp);
