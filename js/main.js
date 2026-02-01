@@ -17,6 +17,7 @@ const seesawLogs = document.getElementById("seesawLogs");
 const seesawContainer = document.getElementById("seesawContainer");
 const seesawClickable = document.getElementById("seesawClickable");
 const seesawPlank = document.getElementById("seesawPlank");
+const distance = document.getElementById("distance");
 
 seesawResetBtn.addEventListener("click", resetSeesaw);
 seesawClickable.addEventListener("click", handleClick);
@@ -57,16 +58,22 @@ function handleMove(e) {
   const seesawContainerRect = seesawContainer.getBoundingClientRect();
   const seesawPlankRect = seesawPlank.getBoundingClientRect();
 
-  let x = e.clientX - seesawContainerRect.left;
+  // Realtime distance meter
+  const plankCenter = seesawPlankRect.left + seesawPlankRect.width / 2;
+  const xFromCenter = e.clientX - plankCenter;
+  const distanceFromCenter = parseFloat(Math.abs(xFromCenter)).toFixed(1);
+  distance.textContent = `Distance to center is : ${distanceFromCenter}px`;
 
+  // Mouse x position on screen
+  let mouseX = e.clientX - seesawContainerRect.left;
   // Plank distance to container element
   const diff = seesawPlankRect.left - seesawContainerRect.left;
 
   const minX = diff;
   const maxX = seesawPlankRect.width + diff;
   // Limit the movement of ghost object
-  x = Math.max(minX, Math.min(x, maxX));
-  currentX = x + "px";
+  mouseX = Math.max(minX, Math.min(mouseX, maxX));
+  currentX = mouseX + "px";
 
   if (ghostObject) {
     ghostObject.style.left = currentX;

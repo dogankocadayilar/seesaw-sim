@@ -199,6 +199,13 @@ body {
   z-index: 7;
 }
 
+.distance {
+  font-size: 1em;
+  font-weight: 600;
+  padding: 10px;
+  color: rgb(var(--dark));
+}
+
 @keyframes appear {
   from {
     opacity: 0;
