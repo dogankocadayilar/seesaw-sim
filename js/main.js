@@ -28,14 +28,14 @@ Elements.seesawClickable.addEventListener("mouseout", () => {
 });
 
 // Refresing clientRect on resize
-let seesawPlankRect = seesawPlank.getBoundingClientRect();
-let seesawContainerRect = seesawContainer.getBoundingClientRect();
+let seesawPlankRect = Elements.seesawPlank.getBoundingClientRect();
+let seesawContainerRect = Elements.seesawContainer.getBoundingClientRect();
 
 window.addEventListener("resize", handleResize);
 
 function handleResize() {
-  seesawPlankRect = seesawPlank.getBoundingClientRect();
-  seesawContainerRect = seesawContainer.getBoundingClientRect();
+  seesawPlankRect = Elements.seesawPlank.getBoundingClientRect();
+  seesawContainerRect = Elements.seesawContainer.getBoundingClientRect();
 }
 
 // Initiliaze the application
