@@ -49,7 +49,7 @@ This project was developed with the assistance of **Gemini (AI)**.
 
 - **Logic Refinement:** AI helped optimize the torque calculation formulas and the logic for relative positioning within the rotating plank.
 - **Documentation:** The README structure and technical explanations were co-authored with AI to ensure clarity and professional standards.
-- **Code Review:** AI was used to identify potential bugs in the LocalStorage synchronization and to suggest the "Ghost Object" preview feature.
+- **Code Review:** AI was used to identify potential bugs in the LocalStorage synchronization.
 
 ## 📋 How to Use
 
