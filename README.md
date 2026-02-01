@@ -22,6 +22,10 @@ Where:
 - $d_i$: Distance from the fulcrum (center).
 - **The Angle:** The difference between $\tau_{left}$ and $\tau_{right}$ is mapped to a maximum tilt degree to provide a realistic visual representation.
 
+## 🌐 Live Demo
+
+You can try the live simulation here: [https://dogankocadayilar.github.io/seesaw-sim/]
+
 ## 🛠 Tech Stack & Architecture
 
 - **Vanilla JavaScript (ES6+):**
