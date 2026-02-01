@@ -29,6 +29,28 @@ Where:
   - **DOM Optimization:** Uses `appendChild` for performance. Weights are appended as children of the `seesawPlank` to ensure they rotate naturally with the board.
 - **CSS3:** Utilizes `transition` for smooth tilting and `absolute` positioning for precise weight placement.
 
+## ⚖️ Trade-offs
+
+- **DOM-Based vs. Canvas Rendering:** I chose **DOM Manipulation** (`appendChild`) over `<canvas>`.
+  - _Pros:_ Easier to handle hover effects, accessibility, and CSS-based transitions.
+  - _Cons:_ Performance may degrade if hundreds of weights are added simultaneously compared to a specialized canvas engine.
+- **Linear Tilt Mapping:** The tilt angle is calculated using a linear mapping of the torque difference. While not a 100% accurate physical rigid-body simulation, it provides a highly intuitive and responsive user experience for a web interface.
+- **Internal State vs. DOM State:** The source of truth is kept in a JavaScript object (`State`), and the UI is updated to match. This adds a slight layer of complexity but prevents the "spaghetti code" that happens when you try to read data directly from HTML elements.
+
+## ⚠️ Limitations
+
+- **Fixed Fulcrum:** The support point (fulcrum) is static at the center. The simulation does not currently support asymmetrical planks.
+- **Static Weights:** Once a weight is "dropped," it is locked to its position. It does not slide down the plank even if the angle is steep (no friction/sliding physics).
+- **Browser Storage Limits:** `LocalStorage` is limited to ~5MB. While sufficient for thousands of weights, a real database would be needed for a persistent global leaderboard or complex save slots.
+
+## 🤖 AI Usage Disclosure
+
+This project was developed with the assistance of **Gemini (AI)**.
+
+- **Logic Refinement:** AI helped optimize the torque calculation formulas and the logic for relative positioning within the rotating plank.
+- **Documentation:** The README structure and technical explanations were co-authored with AI to ensure clarity and professional standards.
+- **Code Review:** AI was used to identify potential bugs in the LocalStorage synchronization and to suggest the "Ghost Object" preview feature.
+
 ## 📋 How to Use
 
 1.  **Move:** Hover your mouse over the seesaw to position the next weight.
