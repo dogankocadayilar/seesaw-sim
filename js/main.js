@@ -21,6 +21,11 @@ const CONFIG = { GHOST_TOP: 140, LINE_TOP: 160, GHOST_STARTING_Y: -1000 };
 Elements.seesawResetBtn.addEventListener("click", resetSeesaw);
 Elements.seesawClickable.addEventListener("click", handleClick);
 Elements.seesawClickable.addEventListener("mousemove", handleMove);
+Elements.seesawClickable.addEventListener("mouseout", () => {
+  if (activeGhost) {
+    UI.removeElements(activeGhost, activeLine);
+  }
+});
 
 // Refresing clientRect on resize
 let seesawPlankRect = seesawPlank.getBoundingClientRect();
