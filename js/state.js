@@ -1,3 +1,5 @@
+import { Physics } from "./physics.js";
+
 // Object state weight, distanceFromCenter, side
 
 export const State = {
@@ -6,6 +8,19 @@ export const State = {
   leftWeight: 0,
   rightWeight: 0,
   angle: 0,
+
+  updatePhysics() {
+    const lefts = this.objects.filter((o) => o.side === "left");
+    const rights = this.objects.filter((o) => o.side === "right");
+
+    this.leftWeight = Physics.calculateWeightSum(lefts);
+    this.rightWeight = Physics.calculateWeightSum(rights);
+
+    const leftTorque = Physics.calculateTorque(lefts);
+    const rightTorque = Physics.calculateTorque(rights);
+
+    this.angle = Physics.calculateAngle(rightTorque, leftTorque);
+  },
 
   reset() {
     this.objects = [];
@@ -46,3 +61,28 @@ export const State = {
     return false;
   },
 };
+
+// function updatePhysics() {
+//   let angle;
+//   let rightObjects;
+//   let leftObjects;
+//   let rightTorque;
+//   let leftTorque;
+//   let rightWeight;
+//   let leftWeight;
+
+//   rightObjects = State.objects.filter((object) => object.side === "right");
+//   leftObjects = State.objects.filter((object) => object.side === "left");
+
+//   rightWeight = Physics.calculateWeightSum(rightObjects);
+//   leftWeight = Physics.calculateWeightSum(leftObjects);
+
+//   rightTorque = Physics.calculateTorque(rightObjects);
+//   leftTorque = Physics.calculateTorque(leftObjects);
+
+//   angle = Physics.calculateAngle(rightTorque, leftTorque);
+
+//   State.angle = parseFloat(angle).toFixed(1);
+//   State.leftWeight = leftWeight;
+//   State.rightWeight = rightWeight;
+// }
