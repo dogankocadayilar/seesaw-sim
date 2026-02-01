@@ -30,8 +30,16 @@ let line;
 
 // Initiliaze the application
 function initApp() {
-  State.reset();
-  nextWeight.textContent = State.nextWeight + " kg";
+  const saved = State.loadFromLocalStorage();
+  if (saved) {
+    State.generateNextWeight();
+    nextWeight.textContent = State.nextWeight + " kg";
+    generateObjects();
+    updatePhysics();
+    updateUI();
+  } else {
+    resetSeesaw();
+  }
 }
 
 // Reset state and UI
@@ -42,6 +50,7 @@ function resetSeesaw() {
   seesawLog.innerHTML = "";
 }
 
+// Current mouse position on x plane needed for re-creating the ghost object
 let currentX = "50%";
 
 function handleMove(e) {
@@ -83,7 +92,7 @@ function handleClick(e) {
     const color = getRandomRGB();
     State.addObject(State.nextWeight, distanceFromCenter, side, color);
 
-    // Create log with given information
+    // Gonna add logs state to for getting logs from ls
     createLog(State.nextWeight, distanceFromCenter, side);
 
     // createObject(distanceFromCenter, side);
@@ -94,6 +103,8 @@ function handleClick(e) {
     updatePhysics();
     updateUI();
     createGhostObject();
+
+    State.saveToLocalStorage();
   }
 }
 
