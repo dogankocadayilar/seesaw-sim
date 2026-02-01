@@ -74,7 +74,7 @@ body {
   transform: translateX(-50%);
   transition: transform ease 200ms;
   transform-origin: center center;
-  width: 400px;
+  width: 500px;
   height: 20px;
   background: rgb(var(--dark));
   pointer-events: none;
@@ -142,14 +142,44 @@ body {
 }
 
 .seesaw-log {
+  background-color: rgba(var(--light), 0.8);
+  border: 1px solid rgb(var(--light));
+  padding: 4px;
+  border-radius: 8px;
+  overflow-y: auto;
+  height: 150px;
+  font-size: 0.8em;
 }
 
-.current-object {
+.log {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border-left: 3px solid darkblue;
+  margin: 4px 0;
+  background-color: white;
+  color: rgb(var(--dark));
+  animation: slideIn ease-out 300ms;
+}
+
+.object {
   position: absolute;
   border-radius: 50%;
-  transform: translateX(-50%);
-  transform-origin: center center;
+  z-index: 10;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-weight: 600;
+  font-size: 0.7em;
+  color: white;
+  bottom: 100%;
+}
+
+.ghost-object {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  transform: translateX(-50%);
   align-items: center;
   justify-content: center;
   font-weight: 600;
@@ -158,9 +188,10 @@ body {
   opacity: 0.5;
   pointer-events: none;
   z-index: 10;
+  background-color: rgb(var(--dark), 0.6);
 }
 
-.current-line {
+.ghost-line {
   position: absolute;
   border-left: 2px dashed rgba(var(--dark), 0.2);
   pointer-events: none;
@@ -168,4 +199,24 @@ body {
   width: 2px;
   height: 30px;
   z-index: 7;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fall {
+  from {
+    transform: translateY(-20px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }

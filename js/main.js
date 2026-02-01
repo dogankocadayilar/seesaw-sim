@@ -13,7 +13,7 @@ const rightWeight = document.getElementById("rightWeight");
 const angle = document.getElementById("angle");
 
 const seesawResetBtn = document.getElementById("seesawResetBtn");
-
+const seesawLog = document.getElementById("seesawLog");
 const seesawContainer = document.getElementById("seesawContainer");
 const seesawClickable = document.getElementById("seesawClickable");
 const seesawPlank = document.getElementById("seesawPlank");
@@ -21,10 +21,11 @@ const seesawPlank = document.getElementById("seesawPlank");
 seesawResetBtn.addEventListener("click", resetSeesaw);
 seesawClickable.addEventListener("click", handleClick);
 seesawClickable.addEventListener("mousemove", handleMove);
-seesawClickable.addEventListener("mouseenter", createObject);
-seesawClickable.addEventListener("mouseleave", removeObject);
+seesawClickable.addEventListener("mouseenter", createGhostObject);
+seesawClickable.addEventListener("mouseleave", removeGhostObject);
 
-let object;
+// I didn't want to create ghost object over and over again thats why i used global variables for it
+let ghostObject;
 let line;
 
 // Initiliaze the application
@@ -37,6 +38,8 @@ function initApp() {
 function resetSeesaw() {
   State.reset();
   updateUI();
+  seesawPlank.innerHTML = "";
+  seesawLog.innerHTML = "";
 }
 
 let currentX = "50%";
@@ -46,7 +49,7 @@ function handleMove(e) {
   const seesawContainerRect = seesawContainer.getBoundingClientRect();
   const seesawPlankRect = seesawPlank.getBoundingClientRect();
 
-  let x = e.clientX - seesawContainerRect.left - 30;
+  let x = e.clientX - seesawContainerRect.left;
 
   // Plank distance to container element
   const diff = seesawPlankRect.left - seesawContainerRect.left;
@@ -57,9 +60,9 @@ function handleMove(e) {
   x = Math.max(minX, Math.min(x, maxX));
   currentX = x + "px";
 
-  if (object) {
-    object.style.left = currentX;
-    object.style.top = 140 + "px";
+  if (ghostObject) {
+    ghostObject.style.left = currentX;
+    ghostObject.style.top = 140 + "px";
   }
 
   if (line) {
@@ -69,24 +72,47 @@ function handleMove(e) {
 }
 
 function handleClick(e) {
-  if (object) {
-    const rect = line.getBoundingClientRect();
-    const seesawClickableRect = seesawClickable.getBoundingClientRect();
-    const x = rect.x - seesawClickableRect.x;
+  if (ghostObject) {
+    const seesawPlankRect = seesawPlank.getBoundingClientRect();
+    const plankCenter = seesawPlankRect.left + seesawPlankRect.width / 2;
 
-    const center = seesawClickableRect.width / 2;
+    const xFromCenter = e.clientX - plankCenter;
+    const side = xFromCenter > 0 ? "right" : "left";
+    const distanceFromCenter = parseFloat(Math.abs(xFromCenter)).toFixed(1);
 
-    const side = x > center ? "right" : "left";
-    const distanceFromCenter = Math.abs(x - center);
+    const color = getRandomRGB();
+    State.addObject(State.nextWeight, distanceFromCenter, side, color);
 
-    State.addObject(State.nextWeight, distanceFromCenter, side);
+    // Create log with given information
+    createLog(State.nextWeight, distanceFromCenter, side);
+
+    // createObject(distanceFromCenter, side);
+    generateObjects();
 
     State.generateNextWeight();
 
     updatePhysics();
     updateUI();
-    createObject();
+    createGhostObject();
   }
+}
+
+function generateObjects() {
+  seesawPlank.innerHTML = State.objects
+    .map((object) => {
+      const { weight, distanceFromCenter, side, color } = object;
+      const size = getObjectSize(weight);
+
+      // Get middle of the plank 0
+      // Calculating object distance to middle of the plank with side variable
+      const positionX =
+        side === "right"
+          ? `calc(50% + ${distanceFromCenter}px - ${size / 2}px)`
+          : `calc(50% - ${distanceFromCenter}px - ${size / 2}px)`;
+
+      return `<div class="object" style="width:${size}px; height:${size}px; left:${positionX}; background:${color}">${weight}kg</div>`;
+    })
+    .join("");
 }
 
 function updatePhysics() {
@@ -109,7 +135,7 @@ function updatePhysics() {
 
   angle = calculateAngle(rightTorque, leftTorque);
 
-  State.angle = angle;
+  State.angle = parseFloat(angle).toFixed(1);
   State.leftWeight = leftWeight;
   State.rightWeight = rightWeight;
 }
@@ -123,38 +149,47 @@ function updateUI() {
   seesawPlank.style.transform = `translateX(-50%) rotate(${State.angle}deg)`;
 }
 
-// Create the object for ui not state (ghost object)
-function createObject() {
+// Create the object for ui state (ghost object)
+function createGhostObject() {
   let posX = currentX;
-  let posY = object ? object.style.top : "0px";
+  let posY = ghostObject ? ghostObject.style.top : "0px";
 
-  removeObject();
+  // If there is already a ghost object remove it
+  removeGhostObject();
 
-  object = document.createElement("div");
-  object.className = "current-object";
-  object.textContent = State.nextWeight + "kg";
+  ghostObject = document.createElement("div");
+  ghostObject.className = "ghost-object";
+  ghostObject.textContent = State.nextWeight + "kg";
 
-  object.style.width = getObjectSize(State.nextWeight) + "px";
-  object.style.height = getObjectSize(State.nextWeight) + "px";
-  object.style.backgroundColor = getRandomRGB();
+  ghostObject.style.width = getObjectSize(State.nextWeight) + "px";
+  ghostObject.style.height = getObjectSize(State.nextWeight) + "px";
 
-  object.style.left = posX;
-  object.style.top = posY;
+  ghostObject.style.left = posX;
+  ghostObject.style.top = posY;
 
   line = document.createElement("div");
-  line.className = "current-line";
+  line.className = "ghost-line";
   line.style.height = 50 + "px";
 
   line.style.left = posX;
   line.style.top = "160px";
 
-  seesawContainer.append(object, line);
+  seesawContainer.append(ghostObject, line);
 }
 
 // Remove the ghost object
-function removeObject() {
-  if (object) object.remove();
+function removeGhostObject() {
+  if (ghostObject) ghostObject.remove();
   if (line) line.remove();
+}
+
+function createLog(weight, distanceFromCenter, side) {
+  const log = document.createElement("div");
+  log.className = "log";
+  log.textContent = `${weight}kg dropped on ${side} at ${distanceFromCenter}px from center.`;
+
+  // Inserting log to on top of the log container
+  seesawLog.insertBefore(log, seesawLog.firstChild);
 }
 
 window.addEventListener("DOMContentLoaded", initApp);
